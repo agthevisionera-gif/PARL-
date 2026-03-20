@@ -404,7 +404,7 @@ async function callAPI(userMsg){
   loading=true;document.getElementById('sendBtn').disabled=true;
   S.history.push({role:'user',content:userMsg});showTyping();
   try{
-    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:getSystem(),messages:S.history})});
+    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:1000,system:getSystem(),messages:S.history})});
     var d=await r.json();
     var reply=(d.content&&d.content[0]&&d.content[0].text)?d.content[0].text:'Sorry, there was an error. Please try again.';
     S.history.push({role:'assistant',content:reply});
