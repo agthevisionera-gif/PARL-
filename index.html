@@ -9,40 +9,78 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#0e0c0a;--surface:#141210;--card:#1c1916;--border:#2a2620;
-  --accent:#c9773a;--accent-glow:rgba(201,119,58,0.1);
+  --accent:#c9773a;--accent2:#e8956a;--accent-glow:rgba(201,119,58,0.1);
   --text:#f0ebe3;--text2:#7a7060;--text3:#3a3630;
   --green:#6aab7e;--green-bg:rgba(106,171,126,0.1);
   --red:#c97070;--red-bg:rgba(201,112,112,0.1);
   --blue:#7099c9;--blue-bg:rgba(112,153,201,0.1);
   --font-d:'Cormorant Garamond',Georgia,serif;
   --font-b:'DM Sans',sans-serif;
+  --r:14px;
 }
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font-b);font-weight:300}
 body{display:flex;flex-direction:column;height:100vh;overflow:hidden}
-#gate{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px;z-index:999;}
-.gate-card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:40px 36px;width:100%;max-width:420px;text-align:center;}
+.screen{display:none;flex-direction:column;height:100%;animation:fadeIn 0.3s ease}
+.screen.active{display:flex}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* EMAIL GATE */
+#screen-gate{align-items:center;justify-content:center;padding:24px;background:var(--bg);position:relative;overflow:hidden}
+#screen-gate::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 30%,rgba(201,119,58,0.06) 0%,transparent 70%);pointer-events:none;}
+.gate-card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:40px 36px;width:100%;max-width:420px;text-align:center}
 .gate-logo{font-family:var(--font-d);font-size:44px;font-weight:600;color:var(--text);letter-spacing:-0.02em;margin-bottom:4px}
 .gate-logo span{color:var(--accent)}
-.gate-tag{font-size:13px;color:var(--text2);margin-bottom:28px}
+.gate-tag{font-size:13px;color:var(--text2);margin-bottom:32px}
 .gate-title{font-family:var(--font-d);font-size:26px;font-weight:300;color:var(--text);margin-bottom:8px;line-height:1.2}
 .gate-title em{font-style:italic;color:var(--accent)}
-.gate-sub{font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:20px}
-.gate-langs{display:flex;justify-content:center;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.gate-sub{font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:28px}
+.gate-langs{display:flex;justify-content:center;gap:8px;margin-bottom:28px;flex-wrap:wrap}
 .gate-lang{background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:5px 12px;font-size:13px;color:var(--text2)}
-#gate-email{width:100%;padding:13px 18px;background:var(--surface);border:1px solid var(--border);border-radius:100px;font-family:var(--font-b);font-size:15px;color:var(--text);outline:none;margin-bottom:10px;text-align:center;transition:border-color 0.2s;}
-#gate-email:focus{border-color:rgba(201,119,58,0.5)}
-#gate-email::placeholder{color:var(--text3)}
-#gate-btn{width:100%;padding:14px;background:var(--accent);color:var(--text);border:none;border-radius:100px;font-family:var(--font-b);font-size:15px;font-weight:500;cursor:pointer;margin-bottom:12px;}
-#gate-btn:hover{background:#b5662a}
-.gate-note{font-size:12px;color:var(--text3)}
-#gate-error{display:none;color:#c97070;font-size:13px;margin-bottom:8px;}
-#gate-success{display:none;color:#6aab7e;font-size:14px;margin-bottom:12px;padding:10px;background:rgba(106,171,126,0.1);border-radius:12px;}
-#app{display:none;flex-direction:row;height:100%}
+.gate-input{width:100%;padding:13px 18px;background:var(--surface);border:1px solid var(--border);border-radius:100px;font-family:var(--font-b);font-size:15px;color:var(--text);outline:none;margin-bottom:10px;transition:border-color 0.2s;text-align:center}
+.gate-input:focus{border-color:rgba(201,119,58,0.5)}
+.gate-input::placeholder{color:var(--text3)}
+.gate-input.error{border-color:var(--red)}
+.gate-btn{width:100%;padding:14px;background:var(--accent);color:var(--text);border:none;border-radius:100px;font-family:var(--font-b);font-size:15px;font-weight:500;cursor:pointer;transition:all 0.2s;margin-bottom:12px}
+.gate-btn:hover{background:#b5662a;transform:translateY(-1px)}
+.gate-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none}
+.gate-note{font-size:12px;color:var(--text3);line-height:1.5}
+.gate-success{display:none;text-align:center;padding:12px 16px;background:var(--green-bg);border:1px solid rgba(106,171,126,0.3);border-radius:12px;color:#6aab7e;font-size:14px;margin-bottom:16px}
+
+/* ONBOARDING */
+#screen-onboarding{align-items:center;justify-content:center;padding:24px;background:var(--bg)}
+#screen-onboarding::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 30%,rgba(201,119,58,0.06) 0%,transparent 70%);pointer-events:none;}
+.ob-logo{font-family:var(--font-d);font-size:40px;font-weight:600;color:var(--text);margin-bottom:8px;letter-spacing:-0.02em}
+.ob-logo span{color:var(--accent)}
+.ob-tagline{font-size:14px;color:var(--text2);margin-bottom:48px}
+.ob-card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:36px;width:100%;max-width:480px}
+.ob-step{display:none}
+.ob-step.active{display:block}
+.ob-title{font-family:var(--font-d);font-size:28px;font-weight:300;color:var(--text);margin-bottom:6px;line-height:1.2}
+.ob-title em{font-style:italic;color:var(--accent)}
+.ob-sub{font-size:14px;color:var(--text2);margin-bottom:28px;line-height:1.6}
+.ob-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ob-grid.cols3{grid-template-columns:repeat(3,1fr)}
+.ob-opt{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 12px;text-align:center;cursor:pointer;transition:all 0.2s;}
+.ob-opt:hover{border-color:var(--accent);background:var(--accent-glow)}
+.ob-opt.sel{border-color:var(--accent);background:var(--accent-glow)}
+.ob-opt-flag{font-size:28px;margin-bottom:6px}
+.ob-opt-name{font-size:14px;font-weight:500;color:var(--text)}
+.ob-opt-sub{font-size:11px;color:var(--text2);margin-top:2px}
+.ob-btn{width:100%;margin-top:24px;padding:14px;background:var(--accent);color:var(--text);border:none;border-radius:100px;font-family:var(--font-b);font-size:15px;font-weight:500;cursor:pointer;transition:all 0.2s;}
+.ob-btn:hover{background:#b5662a}
+.ob-btn:disabled{opacity:0.3;cursor:not-allowed}
+.ob-dots{display:flex;gap:6px;justify-content:center;margin-bottom:24px}
+.ob-dot{width:6px;height:6px;border-radius:50%;background:var(--border);transition:all 0.2s}
+.ob-dot.active{background:var(--accent);width:18px;border-radius:3px}
+
+/* APP */
+#screen-app{display:none;flex-direction:row;height:100%}
+#screen-app.active{display:flex}
 .sidebar{width:240px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;}
 .sb-logo{padding:20px 20px 16px;font-family:var(--font-d);font-size:22px;font-weight:600;color:var(--text);border-bottom:1px solid var(--border)}
 .sb-logo span{color:var(--accent)}
 .sb-section{padding:16px 12px 8px;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3)}
-.sb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;margin:0 4px 2px;cursor:pointer;font-size:14px;color:var(--text2);}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;margin:0 4px 2px;cursor:pointer;transition:all 0.15s;font-size:14px;color:var(--text2);}
 .sb-item:hover{background:var(--card);color:var(--text)}
 .sb-item.active{background:var(--accent-glow);color:var(--accent);border:1px solid rgba(201,119,58,0.2)}
 .sb-item-icon{font-size:16px;width:20px;text-align:center}
@@ -51,6 +89,7 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden}
 .sb-lang-name{font-size:13px;font-weight:500;color:var(--text)}
 .sb-lang-level{font-size:11px;color:var(--accent)}
 .sb-change{font-size:11px;color:var(--text2);cursor:pointer;margin-top:4px;text-decoration:underline}
+.sb-change:hover{color:var(--accent)}
 .sb-footer{margin-top:auto;padding:12px;border-top:1px solid var(--border)}
 .sb-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .sb-stat{background:var(--card);border-radius:8px;padding:10px;text-align:center}
@@ -62,9 +101,11 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden}
 .tutor-name{font-size:15px;font-weight:500;color:var(--text)}
 .tutor-sub{font-size:12px;color:var(--text2)}
 .mode-tabs{margin-left:auto;display:flex;gap:4px;background:var(--card);border:1px solid var(--border);border-radius:100px;padding:3px}
-.mode-tab{padding:6px 14px;border-radius:100px;font-size:13px;color:var(--text2);cursor:pointer;border:none;background:transparent;font-family:var(--font-b);}
+.mode-tab{padding:6px 14px;border-radius:100px;font-size:13px;color:var(--text2);cursor:pointer;transition:all 0.15s;border:none;background:transparent;font-family:var(--font-b);}
 .mode-tab.active{background:var(--accent);color:var(--text)}
 .chat{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px;scroll-behavior:smooth}
+.chat::-webkit-scrollbar{width:3px}
+.chat::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 .msg{display:flex;gap:10px;max-width:82%;animation:msgIn 0.25s ease}
 @keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .msg.u{align-self:flex-end;flex-direction:row-reverse}
@@ -76,7 +117,7 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden}
 .bub{padding:11px 15px;border-radius:14px;font-size:14px;line-height:1.65;font-weight:300}
 .msg.a .bub{background:var(--card);border:1px solid var(--border);color:var(--text);border-top-left-radius:3px}
 .msg.u .bub{background:var(--accent-glow);border:1px solid rgba(201,119,58,0.2);color:var(--text);border-top-right-radius:3px}
-.corr{padding:9px 13px;border-radius:10px;border:1px solid;font-size:13px;line-height:1.55;margin-top:4px;}
+.corr{padding:9px 13px;border-radius:10px;border:1px solid;font-size:13px;line-height:1.55}
 .corr.g{background:var(--red-bg);border-color:var(--red);color:#e0b0b0}
 .corr.v{background:var(--blue-bg);border-color:var(--blue);color:#b0c0e0}
 .corr.ok{background:var(--green-bg);border-color:var(--green);color:#b0d0bc}
@@ -88,62 +129,42 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden}
 .dot-row span:nth-child(3){animation-delay:0.4s}
 @keyframes blink{0%,60%,100%{opacity:0.4}30%{opacity:1}}
 .qr-row{display:flex;flex-wrap:wrap;gap:6px;padding:0 20px 12px}
-.qr{background:var(--card);border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:13px;color:var(--text2);cursor:pointer;font-family:var(--font-b);border:none;}
+.qr{background:var(--card);border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:13px;color:var(--text2);cursor:pointer;transition:all 0.15s;font-family:var(--font-b)}
+.qr:hover{border-color:var(--accent);color:var(--accent)}
 .inp-area{padding:12px 20px 16px;background:var(--surface);border-top:1px solid var(--border);flex-shrink:0}
-.inp-row{display:flex;gap:8px;align-items:flex-end;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:8px 8px 8px 14px;}
+.inp-row{display:flex;gap:8px;align-items:flex-end;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:8px 8px 8px 14px;transition:border-color 0.2s}
 .inp-row:focus-within{border-color:rgba(201,119,58,0.4)}
-#ti{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:var(--font-b);font-size:14px;font-weight:300;resize:none;min-height:22px;max-height:100px;line-height:1.5}
-#ti::placeholder{color:var(--text3)}
-.send{width:34px;height:34px;border-radius:9px;background:var(--accent);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--bg)}
+textarea#ti{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:var(--font-b);font-size:14px;font-weight:300;resize:none;min-height:22px;max-height:100px;line-height:1.5}
+textarea#ti::placeholder{color:var(--text3)}
+.send{width:34px;height:34px;border-radius:9px;background:var(--accent);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0;color:var(--bg)}
 .send:hover{background:#b5662a}
 .send:disabled{background:var(--border);cursor:not-allowed}
 .inp-hint{font-size:11px;color:var(--text3);text-align:center;margin-top:8px}
-.pp{width:220px;flex-shrink:0;background:var(--surface);border-left:1px solid var(--border);padding:20px 16px;overflow-y:auto;display:flex;flex-direction:column;gap:20px;}
+.progress-panel{width:220px;flex-shrink:0;background:var(--surface);border-left:1px solid var(--border);padding:20px 16px;overflow-y:auto;display:flex;flex-direction:column;gap:20px;}
 .pp-title{font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3)}
 .pp-stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px}
-.pp-num{font-family:var(--font-d);font-size:32px;font-weight:600;color:var(--accent);line-height:1}
-.pp-lbl{font-size:12px;color:var(--text2);margin-top:4px}
-.pp-bar-wrap{margin-top:8px}
+.pp-stat-num{font-family:var(--font-d);font-size:32px;font-weight:600;color:var(--accent);line-height:1}
+.pp-stat-lbl{font-size:12px;color:var(--text2);margin-top:4px}
+.pp-bar-wrap{margin-top:6px}
 .pp-bar-top{display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:6px}
 .pp-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
 .pp-bar-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 0.5s ease}
-.vlist{display:flex;flex-direction:column;gap:6px}
-.vitem{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 10px}
-.vword{font-size:13px;font-weight:500;color:var(--accent)}
-#onboarding{display:none;align-items:center;justify-content:center;height:100%;padding:24px;background:var(--bg);flex-direction:column;gap:8px;}
-#onboarding.show{display:flex}
-.ob-logo{font-family:var(--font-d);font-size:40px;font-weight:600;color:var(--text);letter-spacing:-0.02em}
-.ob-logo span{color:var(--accent)}
-.ob-tag{font-size:14px;color:var(--text2);margin-bottom:32px}
-.ob-card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:36px;width:100%;max-width:480px}
-.ob-step{display:none}
-.ob-step.show{display:block}
-.ob-title{font-family:var(--font-d);font-size:28px;font-weight:300;color:var(--text);margin-bottom:6px;line-height:1.2}
-.ob-title em{font-style:italic;color:var(--accent)}
-.ob-sub{font-size:14px;color:var(--text2);margin-bottom:24px;line-height:1.6}
-.ob-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.ob-grid.c3{grid-template-columns:repeat(3,1fr)}
-.ob-opt{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 12px;text-align:center;cursor:pointer;transition:all 0.2s;}
-.ob-opt:hover,.ob-opt.sel{border-color:var(--accent);background:var(--accent-glow)}
-.ob-opt-flag{font-size:28px;margin-bottom:6px}
-.ob-opt-name{font-size:14px;font-weight:500;color:var(--text)}
-.ob-opt-sub{font-size:11px;color:var(--text2);margin-top:2px}
-.ob-dots{display:flex;gap:6px;justify-content:center;margin-bottom:24px}
-.ob-dot{width:6px;height:6px;border-radius:50%;background:var(--border);transition:all 0.2s}
-.ob-dot.on{background:var(--accent);width:18px;border-radius:3px}
-.ob-btn{width:100%;margin-top:20px;padding:14px;background:var(--accent);color:var(--text);border:none;border-radius:100px;font-family:var(--font-b);font-size:15px;font-weight:500;cursor:pointer;}
-.ob-btn:disabled{opacity:0.3;cursor:not-allowed}
-@media(max-width:900px){.pp{display:none}}
+.vocab-list{display:flex;flex-direction:column;gap:6px}
+.vocab-item{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 10px}
+.vocab-word{font-size:13px;font-weight:500;color:var(--accent)}
+.vocab-def{font-size:11px;color:var(--text2);margin-top:2px;line-height:1.4}
+@media(max-width:900px){.progress-panel{display:none}}
 @media(max-width:600px){.sidebar{display:none}.mode-tabs{display:none}}
 </style>
 </head>
 <body>
-<div id="gate">
+
+<div id="screen-gate" class="screen active">
   <div class="gate-card">
     <div class="gate-logo">Parl<span>á</span></div>
     <div class="gate-tag">Your native AI language tutor</div>
     <div class="gate-title">Learn to speak<br><em>like a native.</em></div>
-    <div class="gate-sub">AI tutors who correct every mistake in real time. Free during beta.</div>
+    <div class="gate-sub">Conversational AI tutors who correct every mistake in real time. Free during beta.</div>
     <div class="gate-langs">
       <span class="gate-lang">🇪🇸 Spanish</span>
       <span class="gate-lang">🇫🇷 French</span>
@@ -151,88 +172,87 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden}
       <span class="gate-lang">🇩🇪 German</span>
       <span class="gate-lang">🇵🇹 Portuguese</span>
     </div>
-    <div id="gate-error">Please enter a valid email address.</div>
-    <div id="gate-success">✓ Welcome! Loading your tutor...</div>
-    <input id="gate-email" type="email" placeholder="Enter your email to start" />
-    <button id="gate-btn">Start learning for free →</button>
-    <div class="gate-note">No spam. No credit card. Just your email.</div>
+    <div class="gate-success" id="gate-success">✓ Welcome! Loading your tutor...</div>
+    <input class="gate-input" id="gate-email" type="email" placeholder="Enter your email to start" />
+    <button class="gate-btn" id="gate-btn" onclick="submitGate()">Start learning for free →</button>
+    <div class="gate-note">No spam. No credit card. Just your email so we can improve Parlá for you.</div>
   </div>
 </div>
-<div id="onboarding">
-  <div style="text-align:center">
-    <div class="ob-logo">Parl<span>á</span></div>
-    <div class="ob-tag">Your native AI language tutor</div>
-  </div>
+
+<div id="screen-onboarding" class="screen">
+  <div class="ob-logo">Parl<span>á</span></div>
+  <div class="ob-tagline">Your native AI language tutor</div>
   <div class="ob-card">
     <div class="ob-dots">
-      <div class="ob-dot on" id="d0"></div>
-      <div class="ob-dot" id="d1"></div>
-      <div class="ob-dot" id="d2"></div>
+      <div class="ob-dot active" id="dot0"></div>
+      <div class="ob-dot" id="dot1"></div>
+      <div class="ob-dot" id="dot2"></div>
     </div>
-    <div class="ob-step show" id="s0">
+    <div class="ob-step active" id="ob-step-0">
       <div class="ob-title">Which language do you want to <em>speak?</em></div>
-      <div class="ob-sub">Your tutor will be a native speaker.</div>
-      <div class="ob-grid" id="lang-grid">
-        <div class="ob-opt" data-lang="Spanish" data-flag="🇪🇸" data-tutor="Carlos"><div class="ob-opt-flag">🇪🇸</div><div class="ob-opt-name">Spanish</div><div class="ob-opt-sub">Carlos · Murcia</div></div>
-        <div class="ob-opt" data-lang="French" data-flag="🇫🇷" data-tutor="Sophie"><div class="ob-opt-flag">🇫🇷</div><div class="ob-opt-name">French</div><div class="ob-opt-sub">Sophie · Paris</div></div>
-        <div class="ob-opt" data-lang="Italian" data-flag="🇮🇹" data-tutor="Marco"><div class="ob-opt-flag">🇮🇹</div><div class="ob-opt-name">Italian</div><div class="ob-opt-sub">Marco · Milano</div></div>
-        <div class="ob-opt" data-lang="German" data-flag="🇩🇪" data-tutor="Anna"><div class="ob-opt-flag">🇩🇪</div><div class="ob-opt-name">German</div><div class="ob-opt-sub">Anna · Berlin</div></div>
-        <div class="ob-opt" data-lang="Portuguese" data-flag="🇵🇹" data-tutor="Inês"><div class="ob-opt-flag">🇵🇹</div><div class="ob-opt-name">Portuguese</div><div class="ob-opt-sub">Inês · Lisboa</div></div>
-        <div class="ob-opt" data-lang="Japanese" data-flag="🇯🇵" data-tutor="Yuki"><div class="ob-opt-flag">🇯🇵</div><div class="ob-opt-name">Japanese</div><div class="ob-opt-sub">Yuki · Tokyo</div></div>
-      </div>
-      <button class="ob-btn" id="b0" disabled>Continue →</button>
-    </div>
-    <div class="ob-step" id="s1">
-      <div class="ob-title">What's your current <em>level?</em></div>
-      <div class="ob-sub">Your tutor adapts completely to your level.</div>
-      <div class="ob-grid c3">
-        <div class="ob-opt" data-level="A1"><div class="ob-opt-name">A1</div><div class="ob-opt-sub">Beginner</div></div>
-        <div class="ob-opt" data-level="A2"><div class="ob-opt-name">A2</div><div class="ob-opt-sub">Elementary</div></div>
-        <div class="ob-opt" data-level="B1"><div class="ob-opt-name">B1</div><div class="ob-opt-sub">Intermediate</div></div>
-        <div class="ob-opt" data-level="B2"><div class="ob-opt-name">B2</div><div class="ob-opt-sub">Upper-int.</div></div>
-        <div class="ob-opt" data-level="C1"><div class="ob-opt-name">C1</div><div class="ob-opt-sub">Advanced</div></div>
-        <div class="ob-opt" data-level="C2"><div class="ob-opt-name">C2</div><div class="ob-opt-sub">Mastery</div></div>
-      </div>
-      <button class="ob-btn" id="b1" disabled>Continue →</button>
-    </div>
-    <div class="ob-step" id="s2">
-      <div class="ob-title">What's your main <em>goal?</em></div>
-      <div class="ob-sub">Every session focuses on what matters to you.</div>
+      <div class="ob-sub">Choose your target language. Your tutor will be a native speaker.</div>
       <div class="ob-grid">
-        <div class="ob-opt" data-goal="job interviews and professional vocabulary"><div class="ob-opt-flag">💼</div><div class="ob-opt-name">Work & career</div><div class="ob-opt-sub">Interviews, meetings</div></div>
-        <div class="ob-opt" data-goal="travel and everyday conversation"><div class="ob-opt-flag">✈️</div><div class="ob-opt-name">Travel</div><div class="ob-opt-sub">Daily life abroad</div></div>
-        <div class="ob-opt" data-goal="general fluency and natural conversation"><div class="ob-opt-flag">💬</div><div class="ob-opt-name">General fluency</div><div class="ob-opt-sub">Sound natural</div></div>
-        <div class="ob-opt" data-goal="academic study and formal writing"><div class="ob-opt-flag">🎓</div><div class="ob-opt-name">Academic</div><div class="ob-opt-sub">Exams, essays</div></div>
+        <div class="ob-opt" data-lang="Spanish" data-flag="🇪🇸" data-tutor="Carlos" onclick="selectOpt(this,'lang')"><div class="ob-opt-flag">🇪🇸</div><div class="ob-opt-name">Spanish</div><div class="ob-opt-sub">Carlos · Murcia</div></div>
+        <div class="ob-opt" data-lang="French" data-flag="🇫🇷" data-tutor="Sophie" onclick="selectOpt(this,'lang')"><div class="ob-opt-flag">🇫🇷</div><div class="ob-opt-name">French</div><div class="ob-opt-sub">Sophie · Paris</div></div>
+        <div class="ob-opt" data-lang="Italian" data-flag="🇮🇹" data-tutor="Marco" onclick="selectOpt(this,'lang')"><div class="ob-opt-flag">🇮🇹</div><div class="ob-opt-name">Italian</div><div class="ob-opt-sub">Marco · Milano</div></div>
+        <div class="ob-opt" data-lang="German" data-flag="🇩🇪" data-tutor="Anna" onclick="selectOpt(this,'lang')"><div class="ob-opt-flag">🇩🇪</div><div class="ob-opt-name">German</div><div class="ob-opt-sub">Anna · Berlin</div></div>
+        <div class="ob-opt" data-lang="Portuguese" data-flag="🇵🇹" data-tutor="Inês" onclick="selectOpt(this,'lang')"><div class="ob-opt-flag">🇵🇹</div><div class="ob-opt-name">Portuguese</div><div class="ob-opt-sub">Inês · Lisboa</div></div>
+        <div class="ob-opt" data-lang="Japanese" data-flag="🇯🇵" data-tutor="Yuki" onclick="selectOpt(this,'lang')"><div class="ob-opt-flag">🇯🇵</div><div class="ob-opt-name">Japanese</div><div class="ob-opt-sub">Yuki · Tokyo</div></div>
       </div>
-      <button class="ob-btn" id="b2" disabled>Start learning →</button>
+      <button class="ob-btn" id="btn-step0" disabled onclick="goStep(1)">Continue →</button>
+    </div>
+    <div class="ob-step" id="ob-step-1">
+      <div class="ob-title">What's your current <em>level?</em></div>
+      <div class="ob-sub">Be honest — your tutor adapts to wherever you are right now.</div>
+      <div class="ob-grid cols3">
+        <div class="ob-opt" data-level="A1" onclick="selectOpt(this,'level')"><div class="ob-opt-name">A1</div><div class="ob-opt-sub">Complete beginner</div></div>
+        <div class="ob-opt" data-level="A2" onclick="selectOpt(this,'level')"><div class="ob-opt-name">A2</div><div class="ob-opt-sub">Elementary</div></div>
+        <div class="ob-opt" data-level="B1" onclick="selectOpt(this,'level')"><div class="ob-opt-name">B1</div><div class="ob-opt-sub">Intermediate</div></div>
+        <div class="ob-opt" data-level="B2" onclick="selectOpt(this,'level')"><div class="ob-opt-name">B2</div><div class="ob-opt-sub">Upper-intermediate</div></div>
+        <div class="ob-opt" data-level="C1" onclick="selectOpt(this,'level')"><div class="ob-opt-name">C1</div><div class="ob-opt-sub">Advanced</div></div>
+        <div class="ob-opt" data-level="C2" onclick="selectOpt(this,'level')"><div class="ob-opt-name">C2</div><div class="ob-opt-sub">Mastery</div></div>
+      </div>
+      <button class="ob-btn" id="btn-step1" disabled onclick="goStep(2)">Continue →</button>
+    </div>
+    <div class="ob-step" id="ob-step-2">
+      <div class="ob-title">What's your main <em>goal?</em></div>
+      <div class="ob-sub">Your tutor will focus every session around what matters to you.</div>
+      <div class="ob-grid">
+        <div class="ob-opt" data-goal="job interviews and professional vocabulary" onclick="selectOpt(this,'goal')"><div class="ob-opt-flag">💼</div><div class="ob-opt-name">Work & career</div><div class="ob-opt-sub">Interviews, meetings, emails</div></div>
+        <div class="ob-opt" data-goal="travel and everyday conversation with locals" onclick="selectOpt(this,'goal')"><div class="ob-opt-flag">✈️</div><div class="ob-opt-name">Travel</div><div class="ob-opt-sub">Navigate daily life abroad</div></div>
+        <div class="ob-opt" data-goal="general fluency and natural conversation" onclick="selectOpt(this,'goal')"><div class="ob-opt-flag">💬</div><div class="ob-opt-name">General fluency</div><div class="ob-opt-sub">Sound natural in any context</div></div>
+        <div class="ob-opt" data-goal="academic study, formal writing and exams" onclick="selectOpt(this,'goal')"><div class="ob-opt-flag">🎓</div><div class="ob-opt-name">Academic</div><div class="ob-opt-sub">Exams, essays, formal writing</div></div>
+      </div>
+      <button class="ob-btn" id="btn-step2" disabled onclick="startApp()">Start learning →</button>
     </div>
   </div>
 </div>
-<div id="app">
+
+<div id="screen-app" class="screen">
   <div class="sidebar">
     <div class="sb-logo">Parl<span>á</span></div>
-    <div style="padding:12px 8px 4px"><div class="sb-lang-info" id="sb-info"></div></div>
+    <div style="padding:12px 8px 4px"><div class="sb-lang-info" id="sb-lang-info"></div></div>
     <div class="sb-section">Sessions</div>
-    <div class="sb-item active" id="sb-chat"><span class="sb-item-icon">💬</span>Conversation</div>
-    <div class="sb-item" id="sb-interview"><span class="sb-item-icon">🎯</span>Interview mode</div>
-    <div class="sb-item" id="sb-vocab"><span class="sb-item-icon">📚</span>Vocabulary</div>
-    <div class="sb-section">Account</div>
-    <div class="sb-item" id="sb-reset"><span class="sb-item-icon">⚙️</span>Change language</div>
+    <div class="sb-item active" id="sb-chat" onclick="setTab('chat')"><span class="sb-item-icon">💬</span>Conversation</div>
+    <div class="sb-item" id="sb-interview" onclick="setTab('interview')"><span class="sb-item-icon">🎯</span>Interview mode</div>
+    <div class="sb-item" id="sb-vocab" onclick="setTab('vocab')"><span class="sb-item-icon">📚</span>Vocabulary</div>
+    <div class="sb-section">You</div>
+    <div class="sb-item" onclick="resetApp()"><span class="sb-item-icon">⚙️</span>Change language</div>
     <div class="sb-footer">
       <div class="sb-stats">
-        <div class="sb-stat"><div class="sb-stat-num" id="st-msgs">0</div><div class="sb-stat-lbl">messages</div></div>
-        <div class="sb-stat"><div class="sb-stat-num" id="st-corr">0</div><div class="sb-stat-lbl">corrections</div></div>
+        <div class="sb-stat"><div class="sb-stat-num" id="stat-msgs">0</div><div class="sb-stat-lbl">messages</div></div>
+        <div class="sb-stat"><div class="sb-stat-num" id="stat-corr">0</div><div class="sb-stat-lbl">corrections</div></div>
       </div>
     </div>
   </div>
   <div class="main">
     <div class="topbar">
-      <div class="tutor-av" id="t-av">C</div>
-      <div><div class="tutor-name" id="t-name">Carlos</div><div class="tutor-sub" id="t-sub">Native Spanish · Murcia</div></div>
+      <div class="tutor-av" id="tutor-av">C</div>
+      <div><div class="tutor-name" id="tutor-name">Carlos</div><div class="tutor-sub" id="tutor-sub">Native Spanish · Murcia</div></div>
       <div class="mode-tabs">
-        <button class="mode-tab active" id="tab-libre">Free talk</button>
-        <button class="mode-tab" id="tab-interview">Interview</button>
-        <button class="mode-tab" id="tab-vocab">Vocabulary</button>
+        <button class="mode-tab active" id="tab-libre" onclick="switchMode('libre')">Free talk</button>
+        <button class="mode-tab" id="tab-interview" onclick="switchMode('interview')">Interview</button>
+        <button class="mode-tab" id="tab-vocab" onclick="switchMode('vocab')">Vocabulary</button>
       </div>
     </div>
     <div class="chat" id="chat"></div>
@@ -240,205 +260,192 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden}
     <div class="inp-area">
       <div class="inp-row">
         <textarea id="ti" placeholder="Write in the target language..." rows="1"></textarea>
-        <button class="send" id="sendBtn">
+        <button class="send" id="sendBtn" onclick="send()">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>
       </div>
       <div class="inp-hint">Enter to send · Shift+Enter for new line</div>
     </div>
   </div>
-  <div class="pp">
-    <div class="pp-title">Progress</div>
+  <div class="progress-panel">
+    <div class="pp-title">Your progress</div>
     <div class="pp-stat">
-      <div class="pp-num" id="pp-msgs">0</div>
-      <div class="pp-lbl">messages sent</div>
+      <div class="pp-stat-num" id="pp-msgs">0</div>
+      <div class="pp-stat-lbl">messages sent</div>
       <div class="pp-bar-wrap">
-        <div class="pp-bar-top"><span>Session</span><span id="pp-pct">0%</span></div>
-        <div class="pp-bar"><div class="pp-bar-fill" id="pp-fill" style="width:0%"></div></div>
+        <div class="pp-bar-top"><span>Session goal</span><span id="pp-goal-pct">0%</span></div>
+        <div class="pp-bar"><div class="pp-bar-fill" id="pp-bar" style="width:0%"></div></div>
       </div>
     </div>
-    <div class="pp-stat"><div class="pp-num" id="pp-corr">0</div><div class="pp-lbl">corrections</div></div>
+    <div class="pp-stat"><div class="pp-stat-num" id="pp-corr">0</div><div class="pp-stat-lbl">corrections received</div></div>
     <div>
-      <div class="pp-title" style="margin-bottom:10px">Vocabulary</div>
-      <div class="vlist" id="vlist"><div style="font-size:12px;color:var(--text3)">Words appear here as you learn.</div></div>
+      <div class="pp-title" style="margin-bottom:10px">Vocabulary learned</div>
+      <div class="vocab-list" id="vocab-list"><div style="font-size:12px;color:var(--text3)">Words appear here as you learn.</div></div>
     </div>
   </div>
 </div>
+
 <script>
-const TUTORS={Spanish:{name:'Carlos',origin:'Murcia, Spain',initial:'C'},French:{name:'Sophie',origin:'Paris, France',initial:'S'},Italian:{name:'Marco',origin:'Milano, Italy',initial:'M'},German:{name:'Anna',origin:'Berlin, Germany',initial:'A'},Portuguese:{name:'Inês',origin:'Lisboa, Portugal',initial:'I'},Japanese:{name:'Yuki',origin:'Tokyo, Japan',initial:'Y'}};
-const LDESC={A1:'Beginner',A2:'Elementary',B1:'Intermediate',B2:'Upper-int.',C1:'Advanced',C2:'Mastery'};
-let S={lang:'',level:'',goal:'',tutor:'',mode:'libre',history:[],msgs:0,corr:0,vocab:[]};
-let ob={lang:null,level:null,goal:null};
-let loading=false;
-
-document.getElementById('gate-btn').addEventListener('click',function(){
-  var email=document.getElementById('gate-email').value.trim();
-  var errEl=document.getElementById('gate-error');
-  var sucEl=document.getElementById('gate-success');
-  var inp=document.getElementById('gate-email');
-  if(!email||!email.includes('@')||!email.includes('.')){errEl.style.display='block';inp.style.borderColor='#c97070';return;}
-  errEl.style.display='none';inp.style.display='none';
-  document.getElementById('gate-btn').style.display='none';
-  sucEl.style.display='block';
-  fetch('/api/email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,ts:new Date().toISOString()})}).catch(function(){});
-  sessionStorage.setItem('parla_email',email);
-  setTimeout(function(){
-    document.getElementById('gate').style.display='none';
-    document.getElementById('onboarding').classList.add('show');
+// EMAIL GATE
+function submitGate(){
+  const inp=document.getElementById('gate-email');
+  const val=inp.value.trim();
+  if(!val||!val.includes('@')||!val.includes('.')){
+    inp.classList.add('error');
+    inp.placeholder='Please enter a valid email';
+    setTimeout(()=>{inp.classList.remove('error');inp.placeholder='Enter your email to start';},2000);
+    return;
+  }
+  const btn=document.getElementById('gate-btn');
+  btn.disabled=true;btn.textContent='Loading...';
+  // Save email
+  fetch('/api/email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:val,ts:new Date().toISOString()})}).catch(()=>{});
+  // Store locally so they don't see gate again this session
+  sessionStorage.setItem('parla_email',val);
+  // Show success then proceed
+  inp.style.display='none';btn.style.display='none';
+  document.getElementById('gate-success').style.display='block';
+  setTimeout(()=>{
+    document.getElementById('screen-gate').classList.remove('active');
+    document.getElementById('screen-onboarding').classList.add('active');
   },1200);
-});
-document.getElementById('gate-email').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('gate-btn').click();});
-if(sessionStorage.getItem('parla_email')){document.getElementById('gate').style.display='none';document.getElementById('onboarding').classList.add('show');}
-
-function setupGrid(gridId,type,btnId){
-  document.getElementById(gridId).querySelectorAll('.ob-opt').forEach(function(el){
-    el.addEventListener('click',function(){
-      document.getElementById(gridId).querySelectorAll('.ob-opt').forEach(function(o){o.classList.remove('sel');});
-      el.classList.add('sel');ob[type]=el;
-      document.getElementById(btnId).disabled=false;
-    });
-  });
 }
-setupGrid('lang-grid','lang','b0');
-setupGrid('s1','level','b1');
-setupGrid('s2','goal','b2');
+// Skip gate if already submitted this session
+if(sessionStorage.getItem('parla_email')){
+  document.getElementById('screen-gate').classList.remove('active');
+  document.getElementById('screen-onboarding').classList.add('active');
+}
+// Allow Enter key on email input
+document.getElementById('gate-email').addEventListener('keydown',e=>{if(e.key==='Enter')submitGate();});
 
-function goStep(n){[0,1,2].forEach(function(i){document.getElementById('s'+i).classList.toggle('show',i===n);document.getElementById('d'+i).classList.toggle('on',i===n);});}
-document.getElementById('b0').addEventListener('click',function(){goStep(1);});
-document.getElementById('b1').addEventListener('click',function(){goStep(2);});
-document.getElementById('b2').addEventListener('click',function(){startApp();});
+{name:'Carlos',origin:'Murcia, Spain',initial:'C'},French:{name:'Sophie',origin:'Paris, France',initial:'S'},Italian:{name:'Marco',origin:'Milano, Italy',initial:'M'},German:{name:'Anna',origin:'Berlin, Germany',initial:'A'},Portuguese:{name:'Inês',origin:'Lisboa, Portugal',initial:'I'},Japanese:{name:'Yuki',origin:'Tokyo, Japan',initial:'Y'}};
+const LEVEL_DESC={A1:'Complete beginner',A2:'Elementary',B1:'Intermediate',B2:'Upper-intermediate',C1:'Advanced',C2:'Mastery'};
+const SYSTEMS={
+  libre:(lang,level,goal,tutor)=>`You are ${tutor}, a native ${lang} speaker and language tutor. Student goal: ${goal}. Level: ${level} (${LEVEL_DESC[level]}). Personality: warm but demanding, speak naturally. CORRECTIONS: after every student message, correct mistakes inline. Format: ✏️ "[wrong]" → "[correct]" — [brief explanation in ${lang}]. If perfect: ✅ Perfect. Correct grammar, vocabulary, word order, register. RESPONSES: always write in ${lang}. For A1/A2 use simpler vocabulary. For B1+ speak naturally with idioms. Bold new words like **palabra**. End with a question. Max 2-3 short paragraphs.`,
+  interview:(lang,level,goal,tutor)=>`You are ${tutor}, a native ${lang} speaker conducting a job interview in ${lang}. Candidate level: ${level}. After each response give: 📊 FEEDBACK: [2 lines on clarity, vocab, professionalism] ✏️ IMPROVE: [better phrasing] ➡️ NEXT: [next question]. Questions in order: self-intro, experience, skills, challenge handled, why this role, availability/salary, their questions.`,
+  vocab:(lang,level,goal,tutor)=>`You are ${tutor}, native ${lang} speaker teaching vocabulary. Level: ${level}. Focus: ${goal}. Teach 2-3 related words per exchange. For each: bold word, meaning, example sentence, real-life sentence they could use. Ask student to write their own sentence. Correct their attempt. Group by theme. Adapt to level ${level}.`
+};
+let state={lang:'',level:'',goal:'',tutor:'',mode:'libre',history:[],msgs:0,corrections:0,vocab:[]};
+let obSel={lang:null,level:null,goal:null};
 
+function selectOpt(el,type){
+  el.closest('.ob-grid').querySelectorAll('.ob-opt').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');obSel[type]=el;
+  const m={lang:'btn-step0',level:'btn-step1',goal:'btn-step2'};
+  document.getElementById(m[type]).disabled=false;
+}
+function goStep(n){
+  document.querySelectorAll('.ob-step').forEach((s,i)=>s.classList.toggle('active',i===n));
+  document.querySelectorAll('.ob-dot').forEach((d,i)=>d.classList.toggle('active',i===n));
+}
 function startApp(){
-  if(!ob.lang||!ob.level||!ob.goal)return;
-  S.lang=ob.lang.dataset.lang;S.level=ob.level.dataset.level;S.goal=ob.goal.dataset.goal;S.tutor=TUTORS[S.lang].name;
-  S.history=[];S.msgs=0;S.corr=0;S.vocab=[];
-  var t=TUTORS[S.lang];
-  document.getElementById('t-av').textContent=t.initial;
-  document.getElementById('t-name').textContent=t.name;
-  document.getElementById('t-sub').textContent='Native '+S.lang+' · '+t.origin;
-  document.getElementById('sb-info').innerHTML='<div class="sb-lang-flag">'+ob.lang.querySelector('.ob-opt-flag').textContent+'</div><div class="sb-lang-name">'+S.lang+'</div><div class="sb-lang-level">'+S.level+' — '+LDESC[S.level]+'</div><div class="sb-change" id="sb-change-btn">Change language</div>';
-  document.getElementById('onboarding').classList.remove('show');
-  document.getElementById('app').style.display='flex';
+  if(!obSel.lang||!obSel.level||!obSel.goal)return;
+  state.lang=obSel.lang.dataset.lang;state.level=obSel.level.dataset.level;
+  state.goal=obSel.goal.dataset.goal;state.tutor=TUTORS[state.lang].name;
+  state.history=[];state.msgs=0;state.corrections=0;state.vocab=[];
+  const t=TUTORS[state.lang];
+  document.getElementById('tutor-av').textContent=t.initial;
+  document.getElementById('tutor-name').textContent=t.name;
+  document.getElementById('tutor-sub').textContent=`Native ${state.lang} · ${t.origin}`;
+  document.getElementById('sb-lang-info').innerHTML=`<div class="sb-lang-flag">${obSel.lang.querySelector('.ob-opt-flag').textContent}</div><div class="sb-lang-name">${state.lang}</div><div class="sb-lang-level">${state.level} — ${LEVEL_DESC[state.level]}</div><div class="sb-change" onclick="resetApp()">Change language</div>`;
+  document.getElementById('screen-onboarding').classList.remove('active');
+  document.getElementById('screen-app').classList.add('active');
   document.getElementById('chat').innerHTML='';
-  document.getElementById('sb-change-btn').addEventListener('click',resetApp);
-  setQR(['Hello! Let\'s start','What should we talk about?','Give me a challenge']);
-  callAPI('Hi! I selected '+S.lang+' at level '+S.level+'. My goal: '+S.goal+'. Please greet me and start our session in '+S.lang+'.');
+  setQR(['Hello! Start the conversation','What should we talk about?','Give me a challenge']);
+  callAPI(`Hi! I selected ${state.lang} at level ${state.level}. My goal: ${state.goal}. Please greet me and start our session in ${state.lang}.`);
 }
-
 function resetApp(){
-  S={lang:'',level:'',goal:'',tutor:'',mode:'libre',history:[],msgs:0,corr:0,vocab:[]};
-  ob={lang:null,level:null,goal:null};
-  document.querySelectorAll('.ob-opt').forEach(function(o){o.classList.remove('sel');});
-  ['b0','b1','b2'].forEach(function(id){document.getElementById(id).disabled=true;});
+  state={lang:'',level:'',goal:'',tutor:'',mode:'libre',history:[],msgs:0,corrections:0,vocab:[]};
+  obSel={lang:null,level:null,goal:null};
+  document.querySelectorAll('.ob-opt').forEach(o=>o.classList.remove('sel'));
+  ['btn-step0','btn-step1','btn-step2'].forEach(id=>document.getElementById(id).disabled=true);
   goStep(0);
-  document.getElementById('app').style.display='none';
-  document.getElementById('onboarding').classList.add('show');
+  document.getElementById('screen-app').classList.remove('active');
+  document.getElementById('screen-onboarding').classList.add('active');
 }
-
-['libre','interview','vocab'].forEach(function(m){document.getElementById('tab-'+m).addEventListener('click',function(){switchMode(m);});});
-['sb-chat','sb-interview','sb-vocab'].forEach(function(id){
-  document.getElementById(id).addEventListener('click',function(){
-    var m=id==='sb-chat'?'libre':id==='sb-interview'?'interview':'vocab';
-    document.querySelectorAll('.sb-item').forEach(function(i){i.classList.remove('active');});
-    document.getElementById(id).classList.add('active');
-    switchMode(m);
-  });
-});
-document.getElementById('sb-reset').addEventListener('click',resetApp);
-
 function switchMode(m){
-  S.mode=m;S.history=[];
-  document.querySelectorAll('.mode-tab').forEach(function(t){t.classList.remove('active');});
-  document.getElementById('tab-'+m).classList.add('active');
+  state.mode=m;state.history=[];
+  document.querySelectorAll('.mode-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(`tab-${m}`).classList.add('active');
   document.getElementById('chat').innerHTML='';
-  var starts={libre:'Start a free conversation in '+S.lang+'. Begin naturally.',interview:'Start a job interview in '+S.lang+' for goal: '+S.goal+'. Begin with first question.',vocab:'Teach vocabulary in '+S.lang+' related to: '+S.goal+'. Start with first words.'};
-  callAPI(starts[m]);
+  const s={libre:`Start a free conversation in ${state.lang}. Begin naturally.`,interview:`Start a job interview in ${state.lang} for goal: ${state.goal}. Begin with first question.`,vocab:`Teach vocabulary in ${state.lang} related to: ${state.goal}. Start with first set of words.`};
+  callAPI(s[m]);
 }
-
-function getSystem(){
-  var t=S.tutor,l=S.lang,lv=S.level,g=S.goal,ld=LDESC[lv];
-  if(S.mode==='libre')return 'You are '+t+', a native '+l+' speaker and language tutor. Student goal: '+g+'. Level: '+lv+' ('+ld+'). Be warm but demanding. Speak naturally. CORRECTIONS: after every student message, correct mistakes inline. Format: ✏️ "[wrong]" → "[correct]" — [explanation in '+l+']. If perfect: ✅ Perfect. RESPONSES: always write in '+l+'. Bold new words like **palabra**. End with a question. Max 2-3 short paragraphs.';
-  if(S.mode==='interview')return 'You are '+t+', conducting a job interview in '+l+'. Level: '+lv+'. After each response: 📊 FEEDBACK: [2 lines] ✏️ IMPROVE: [better phrasing] ➡️ NEXT: [next question]. Ask: self-intro, experience, skills, challenge, why this role, availability/salary, their questions.';
-  return 'You are '+t+', teaching vocabulary in '+l+'. Level: '+lv+'. Focus: '+g+'. Teach 2-3 related words per exchange. For each: bold word, meaning, example, real-life sentence. Ask student to write their own. Correct their attempt.';
+function setTab(t){
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  document.getElementById(`sb-${t}`).classList.add('active');
+  switchMode(t==='chat'?'libre':t==='interview'?'interview':'vocab');
 }
-
-var ti=document.getElementById('ti');
-ti.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}});
-ti.addEventListener('input',function(){ti.style.height='auto';ti.style.height=Math.min(ti.scrollHeight,100)+'px';});
-document.getElementById('sendBtn').addEventListener('click',sendMsg);
-
-function sendMsg(){
-  var txt=ti.value.trim();if(!txt||loading)return;
+const ti=document.getElementById('ti');
+ti.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});
+ti.addEventListener('input',()=>{ti.style.height='auto';ti.style.height=Math.min(ti.scrollHeight,100)+'px';});
+function send(){
+  const txt=ti.value.trim();if(!txt||isLoading)return;
   ti.value='';ti.style.height='auto';
   addMsg('u',txt);document.getElementById('qr-row').innerHTML='';callAPI(txt);
 }
-
 function addMsg(role,content){
-  var t=TUTORS[S.lang]||{initial:'T'};
-  var div=document.createElement('div');div.className='msg '+role;
-  div.innerHTML='<div class="mav">'+(role==='a'?t.initial:'U')+'</div><div class="mbody"><div class="bub">'+fmt(content)+'</div></div>';
+  const t=TUTORS[state.lang]||{initial:'T'};
+  const div=document.createElement('div');div.className=`msg ${role}`;
+  div.innerHTML=`<div class="mav">${role==='a'?t.initial:'U'}</div><div class="mbody"><div class="bub">${fmt(content)}</div></div>`;
   document.getElementById('chat').appendChild(div);
   document.getElementById('chat').scrollTop=99999;
 }
-
 function fmt(text){
   return text
     .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
-    .replace(/✏️\s*"([^"]+)"\s*→\s*"([^"]+)"\s*—\s*([^\n]+)/g,function(_,w,c,e){return '<div class="corr g"><div class="corr-lbl">✏️ Correction</div><span style="text-decoration:line-through;opacity:0.5">'+w+'</span> → <strong>'+c+'</strong> — '+e+'</div>';})
+    .replace(/✏️\s*"([^"]+)"\s*→\s*"([^"]+)"\s*—\s*([^\n]+)/g,(_,w,c,e)=>`<div class="corr g"><div class="corr-lbl">✏️ Correction</div><span style="text-decoration:line-through;opacity:0.5">${w}</span> → <strong>${c}</strong> — ${e}</div>`)
     .replace(/✅\s*[Pp]erfect\.?/g,'<div class="corr ok"><div class="corr-lbl">✅ No errors</div>Perfect! Keep it up.</div>')
-    .replace(/📊\s*FEEDBACK:([\s\S]*?)(?=✏️\s*IMPROVE:|➡️\s*NEXT:|$)/g,function(_,c){return '<div class="corr v"><div class="corr-lbl">📊 Feedback</div>'+c.trim()+'</div>';})
-    .replace(/✏️\s*IMPROVE:([\s\S]*?)(?=➡️\s*NEXT:|$)/g,function(_,c){return '<div class="corr g"><div class="corr-lbl">✏️ Improve</div>'+c.trim()+'</div>';})
-    .replace(/➡️\s*NEXT:(.*)/g,function(_,q){return '<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-weight:500">➡️ '+q.trim()+'</div>';})
+    .replace(/📊\s*FEEDBACK:([\s\S]*?)(?=✏️\s*IMPROVE:|➡️\s*NEXT:|$)/g,(_,c)=>`<div class="corr v"><div class="corr-lbl">📊 Feedback</div>${c.trim()}</div>`)
+    .replace(/✏️\s*IMPROVE:([\s\S]*?)(?=➡️\s*NEXT:|$)/g,(_,c)=>`<div class="corr g"><div class="corr-lbl">✏️ Improve</div>${c.trim()}</div>`)
+    .replace(/➡️\s*NEXT:(.*)/g,(_,q)=>`<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-weight:500">➡️ ${q.trim()}</div>`)
     .replace(/\n/g,'<br>');
 }
-
 function showTyping(){
-  var t=TUTORS[S.lang]||{initial:'T'};
-  var div=document.createElement('div');div.className='msg a';div.id='typing';
-  div.innerHTML='<div class="mav">'+t.initial+'</div><div class="mbody"><div class="bub typing-bub"><div class="dot-row"><span></span><span></span><span></span></div></div></div>';
+  const t=TUTORS[state.lang]||{initial:'T'};
+  const div=document.createElement('div');div.className='msg a';div.id='typing';
+  div.innerHTML=`<div class="mav">${t.initial}</div><div class="mbody"><div class="bub typing-bub"><div class="dot-row"><span></span><span></span><span></span></div></div></div>`;
   document.getElementById('chat').appendChild(div);document.getElementById('chat').scrollTop=99999;
 }
-function removeTyping(){var e=document.getElementById('typing');if(e)e.remove();}
-
+function removeTyping(){const e=document.getElementById('typing');if(e)e.remove();}
+let isLoading=false;
 async function callAPI(userMsg){
-  loading=true;document.getElementById('sendBtn').disabled=true;
-  S.history.push({role:'user',content:userMsg});showTyping();
+  isLoading=true;document.getElementById('sendBtn').disabled=true;
+  state.history.push({role:'user',content:userMsg});showTyping();
   try{
-    var r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001
-',max_tokens:1000,system:getSystem(),messages:S.history})});
-    var d=await r.json();
-    var reply=(d.content&&d.content[0]&&d.content[0].text)?d.content[0].text:'Sorry, there was an error. Please try again.';
-    S.history.push({role:'assistant',content:reply});
-    removeTyping();addMsg('a',reply);updateStats(reply);updateQR();extractVocab(reply);
+    const r=await fetch('/api/chat',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYSTEMS[state.mode](state.lang,state.level,state.goal,state.tutor),messages:state.history})
+    });
+    const d=await r.json();
+    const reply=d.content?.[0]?.text||'Sorry, there was an error. Please try again.';
+    state.history.push({role:'assistant',content:reply});
+    removeTyping();addMsg('a',reply);updateStats(reply);updateQR(reply);extractVocab(reply);
   }catch(e){removeTyping();addMsg('a','Connection error. Please try again.');}
-  loading=false;document.getElementById('sendBtn').disabled=false;ti.focus();
+  isLoading=false;document.getElementById('sendBtn').disabled=false;ti.focus();
 }
-
 function updateStats(reply){
-  S.msgs++;if(reply.includes('✏️'))S.corr++;
-  document.getElementById('st-msgs').textContent=S.msgs;document.getElementById('st-corr').textContent=S.corr;
-  document.getElementById('pp-msgs').textContent=S.msgs;document.getElementById('pp-corr').textContent=S.corr;
-  var pct=Math.min(100,Math.round((S.msgs/20)*100));
-  document.getElementById('pp-fill').style.width=pct+'%';document.getElementById('pp-pct').textContent=pct+'%';
+  state.msgs++;if(reply.includes('✏️'))state.corrections++;
+  document.getElementById('stat-msgs').textContent=state.msgs;
+  document.getElementById('stat-corr').textContent=state.corrections;
+  document.getElementById('pp-msgs').textContent=state.msgs;
+  document.getElementById('pp-corr').textContent=state.corrections;
+  const pct=Math.min(100,Math.round((state.msgs/20)*100));
+  document.getElementById('pp-bar').style.width=pct+'%';
+  document.getElementById('pp-goal-pct').textContent=pct+'%';
 }
-
 function extractVocab(reply){
-  var matches=[],re=/\*\*([^*]+)\*\*/g,m;
-  while((m=re.exec(reply))!==null){matches.push(m[1]);}
-  matches.forEach(function(w){if(!S.vocab.includes(w)&&w.length>2&&w.length<30){S.vocab.unshift(w);if(S.vocab.length>8)S.vocab.pop();}});
-  if(S.vocab.length)document.getElementById('vlist').innerHTML=S.vocab.map(function(w){return '<div class="vitem"><div class="vword">'+w+'</div></div>';}).join('');
+  const m=[...reply.matchAll(/\*\*([^*]+)\*\*/g)].map(x=>x[1]);
+  m.forEach(w=>{if(!state.vocab.includes(w)&&w.length>2&&w.length<30){state.vocab.unshift(w);if(state.vocab.length>8)state.vocab.pop();}});
+  if(state.vocab.length)document.getElementById('vocab-list').innerHTML=state.vocab.map(w=>`<div class="vocab-item"><div class="vocab-word">${w}</div></div>`).join('');
 }
-
-function setQR(arr){
-  document.getElementById('qr-row').innerHTML=arr.map(function(q){return '<button class="qr" data-q="'+q+'">'+q+'</button>';}).join('');
-  document.getElementById('qr-row').querySelectorAll('.qr').forEach(function(btn){btn.addEventListener('click',function(){ti.value=btn.dataset.q;sendMsg();});});
+function setQR(arr){document.getElementById('qr-row').innerHTML=arr.map(q=>`<button class="qr" onclick="quickSend('${q}')">${q}</button>`).join('');}
+function updateQR(reply){
+  if(!reply.includes('?'))return;
+  const q=state.mode==='libre'?['Can you give an example?','Tell me more','I have a question']:state.mode==='interview'?['Repeat the question','Give me a hint']:['More words','Next theme','Let me practice'];
+  setQR(q);
 }
-
-function updateQR(){
-  if(S.mode==='libre')setQR(['Can you give an example?','Tell me more','I have a question']);
-  else if(S.mode==='interview')setQR(['Repeat the question','Give me a hint']);
-  else setQR(['More words','Next theme','Let me practice']);
-}
+function quickSend(t){document.getElementById('ti').value=t;send();}
 </script>
 </body>
 </html>
